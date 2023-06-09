@@ -82,14 +82,88 @@
 #define array_size(array) \
 	((sizeof(array) / sizeof((array)[0])) + assert_array(array))
 
-#define array_ssize(array)		((long)array_size(array))
+#define array_ssize(array)	((long)array_size(array))
 
 #if __has_builtin(__builtin_expect)
-#define predict_true(expr)		__builtin_expect((expr) != 0, 1)
-#define predict_false(expr)		__builtin_expect((expr) != 0, 0)
+#define predict_true(expr)	__builtin_expect((expr) != 0, 1)
+#define predict_false(expr)	__builtin_expect((expr) != 0, 0)
 #else
-#define predict_true(expr)		(expr)
-#define predict_false(expr)		(expr)
+#define predict_true(expr)	(expr)
+#define predict_false(expr)	(expr)
 #endif
+
+#if __has_attribute(__used__)
+#define always_used		__attribute__((__used__))
+#else
+#define always_used
+#endif
+
+#if __has_attribute(__unused__)
+#define maybe_unused		__attribute__((__unused__))
+#define always_unused		__attribute__((__unused__))
+#else
+#define maybe_unused
+#define always_unused
+#endif
+
+#if __has_attribute(__nonnull__)
+#define non_null(...)		__attribute__((__nonnull__(__VA_ARGS__)))
+#else
+#define non_null(...)
+#endif
+
+#if __has_attribute(__fallthrough__)
+#define fallthrough		__attribute__((__fallthrough__))
+#else
+#define fallthrough
+#endif
+
+#if __has_attribute(__noinline__)
+#define never_inline		__attribute__((__noinline__))
+#else
+#define never_inline
+#endif
+
+#if __has_attribute(__always_inline__)
+#define always_inline		__attribute__((__always_inline__)) inline
+#else
+#define always_inline		inline
+#endif
+
+#if __has_attribute(__const__)
+#define constfunc		__attribute__((__const__))
+#else
+#define constfunc
+#endif
+
+#if __has_attribute(__pure__)
+#define purefunc		__attribute__((__pure__))
+#else
+#define purefunc
+#endif
+
+#if __has_attribute(__warn_unused_result__)
+#define check_return		__attribute__((__warn_unused_result__))
+#else
+#define check_return
+#endif
+
+#if __has_attribute(__format_arg__)
+#define format_arg(arg)		__attribute__((__format_arg__(arg)))
+#else
+#define format_arg(arg)
+#endif
+
+#if __has_attribute(__format__)
+#define formatlike(type, fmtarg, firstvararg) \
+	__attribute__((__format__(type, fmtarg, firstvararg)))
+#else
+#define formatlike(type, fmtarg, firstvararg)
+#endif
+
+#define printflike(fmtarg)	formatlike(__printf__, fmtarg, fmtarg + 1)
+#define vprintflike(fmtarg)	formatlike(__printf__, fmtarg, 0)
+#define scanflike(fmtarg)	formatlike(__scanf__, fmtarg, fmtarg + 1)
+#define vscanflike(fmtarg)	formatlike(__scanf__, fmtarg, 0)
 
 #endif /* !defined(CDEFS_H) */
