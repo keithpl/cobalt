@@ -38,6 +38,11 @@
 #define bit_sizeof(x)		(CHAR_BIT * sizeof(x))
 #define bit_ssizeof(x)		((long)bit_sizeof(x))
 
+#define array_size(array) \
+	((sizeof(array) / sizeof((array)[0])) + assert_array(array))
+
+#define array_ssize(array)	((long)array_size(array))
+
 /*
  * A variant of static_assert() that is itself an expression, always
  * resolving to zero.
@@ -79,10 +84,54 @@
 
 #endif /* __has_builtin(__builtin_types_compatible_p) */
 
-#define array_size(array) \
-	((sizeof(array) / sizeof((array)[0])) + assert_array(array))
+/* Promote, or demote, the type of 'value' to the inferred type of the
+ * expression 'expr'.
+ */
+#define promote_value(expr, value) \
+	((__typeof__(expr))(value))
 
-#define array_ssize(array)	((long)array_size(array))
+#define type_is_signed(type)	expr_is_signed((type)1)
+#define type_is_unsigned(type)	expr_is_unsigned((type)1)
+#define type_min_value(type)	expr_min_value((type)1)
+#define type_max_value(type)	expr_max_value((type)1)
+
+#define expr_is_unsigned(expr)	(!expr_is_signed(expr))
+
+#define expr_is_signed(expr) _Generic((expr),	\
+	char:			(CHAR_MIN < 0),	\
+	signed char:		1,		\
+	short:			1,		\
+	int:			1,		\
+	long:			1,		\
+	unsigned char:		0,		\
+	unsigned short:		0,		\
+	unsigned int:		0,		\
+	unsigned long:		0		\
+)
+
+#define expr_min_value(expr) _Generic((expr),	\
+	char:			CHAR_MIN,	\
+	signed char:		SCHAR_MIN,	\
+	short:			SHRT_MIN,	\
+	int:			INT_MIN,	\
+	long:			LONG_MIN,	\
+	unsigned char:		0,		\
+	unsigned short:		0,		\
+	unsigned int:		0,		\
+	unsigned long:		0		\
+)
+
+#define expr_max_value(expr) _Generic((expr),	\
+	char:			CHAR_MAX,	\
+	signed char:		SCHAR_MAX,	\
+	short:			SHRT_MAX,	\
+	int:			INT_MAX,	\
+	long:			LONG_MAX,	\
+	unsigned char:		UCHAR_MAX,	\
+	unsigned short:		USHRT_MAX,	\
+	unsigned int:		UINT_MAX,	\
+	unsigned long:		ULONG_MAX	\
+)
 
 #if __has_builtin(__builtin_expect)
 #define predict_true(expr)	__builtin_expect((expr) != 0, 1)
