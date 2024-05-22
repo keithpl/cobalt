@@ -1,3 +1,22 @@
+# Cobalt executable
+cobalt
+
+# Logging and configuration files
+*.log
+*.conf
+
+# Clangd files
+.clangd
+compile_flags.txt
+compile_commands.json
+
+# Gprof files
+prof_output
+gmon.out
+
+# Valgrind files
+vgcore.*
+
 # Prerequisites
 *.d
 
