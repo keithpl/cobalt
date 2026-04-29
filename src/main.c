@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+#include "cdefs.h"
+
 int main(void)
 {
 	printf("I am alive.\n");
