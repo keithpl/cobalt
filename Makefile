@@ -38,3 +38,11 @@ CC_VERSION_TEXT	:= $(shell $(CC) --version 2>/dev/null | head -n 1)
 ifneq ($(findstring gcc,$(CC_VERSION_TEXT)),)
     WARNS += $(GCC_WARNS)
 endif
+
+# Additional CFLAGS and warnings defined only for the C language server,
+# unrelated to the final build of the project.
+LSP_CFLAGS	:= $(CFLAGS) $(RELEASE_CFLAGS) $(WARNS)			\
+		   -Wreserved-identifier -Wno-unused-function		\
+		   -Wno-empty-translation-unit
+
+LSP_CFLAGS_FILE	:= compile_flags.txt
