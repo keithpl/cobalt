@@ -39,4 +39,14 @@
 #endif
 #endif
 
+/* Concatenate tokens `x` and `y` without macro expansion. */
+#define CONCAT(x, y)		x ## y
+/* First expand tokens `x` and `y`, then concatenate the expanded results. */
+#define XCONCAT(x, y)		CONCAT(x, y)
+
+/* Stringify variadic arguments without macro expansion. */
+#define STRINGIFY(...)		#__VA_ARGS__
+/* First expand all variadic tokens, then stringify the expanded results. */
+#define XSTRINGIFY(...)		STRINGIFY(__VA_ARGS__)
+
 #endif /* CDEFS_H */
