@@ -27,3 +27,14 @@ WARNS		:= -Wall -Wextra -Wpedantic -pedantic-errors -Wformat=2	\
 		   -Wnull-dereference -Wcast-align
 
 DEBUG_WARNS	:= -Werror
+
+# Additional warnings that may not be supported by all compilers, but are
+# supported by GCC.
+GCC_WARNS	:= -Wjump-misses-init -Wlogical-op -Walloc-zero		\
+		   -Wduplicated-branches -Wduplicated-cond
+
+CC_VERSION_TEXT	:= $(shell $(CC) --version 2>/dev/null | head -n 1)
+
+ifneq ($(findstring gcc,$(CC_VERSION_TEXT)),)
+    WARNS += $(GCC_WARNS)
+endif
