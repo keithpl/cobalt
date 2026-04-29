@@ -1,6 +1,8 @@
 #ifndef CDEFS_H
 #define CDEFS_H
 
+#include <stdint.h>
+
 #if !defined(__has_attribute)
 #define __has_attribute(x)	0
 #endif
@@ -48,5 +50,15 @@
 #define STRINGIFY(...)		#__VA_ARGS__
 /* First expand all variadic tokens, then stringify the expanded results. */
 #define XSTRINGIFY(...)		STRINGIFY(__VA_ARGS__)
+
+/*
+ * Remove the `const` qualifier from `ptr` by casting it through `uintptr_t`.
+ * Casting directly from `const T *` to `T *`, even through `const void *` or
+ * `void *`, triggers -Wcast-qual.
+ *
+ * Do NOT use this on any object that was originally declared `const` as this is
+ * undefined behavior.
+ */
+#define DECONST(type, ptr)	((type)(uintptr_t)(const void *)(ptr))
 
 #endif /* CDEFS_H */
