@@ -118,4 +118,26 @@
 #define scountof(array) \
 	((ssizeof(array) / ssizeof((array)[0])) + assert_is_array(array))
 
+#define is_power_of_two(x)	(((x) > 0) && (!((x) & ((x) - 1))))
+
+#if __has_builtin(__builtin_align_up)
+#define align_up		__builtin_align_up
+#else
+#define align_up(x, align) \
+	((typeof(x))(((uintptr_t)(x) + ((align) - 1)) & (~((align) - 1))))
+#endif
+
+#if __has_builtin(__builtin_align_down)
+#define align_down		__builtin_align_down
+#else
+#define align_down(x, align) \
+	((typeof(x))((uintptr_t)(x) & (~((align) - 1))))
+#endif
+
+#if __has_builtin(__builtin_is_aligned)
+#define is_aligned		__builtin_is_aligned
+#else
+#define is_aligned(x, align)	(!((uintptr_t)(x) & ((align) - 1)))
+#endif
+
 #endif /* CDEFS_H */
