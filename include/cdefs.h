@@ -1,6 +1,7 @@
 #ifndef CDEFS_H
 #define CDEFS_H
 
+#include <stddef.h>
 #include <stdint.h>
 
 #if !defined(__has_attribute)
@@ -66,10 +67,26 @@
  * value (int)0. Unlike `static_assert()`, which is a declaration, this macro
  * may appear anywhere an expression is valid.
  */
-#define static_assert_expr(cond, msg)			\
-	((int)(sizeof(struct {				\
-		_Static_assert((cond), msg);		\
-		int dummy;				\
+#define static_assert_expr(cond, msg)				\
+	((int)(sizeof(struct {					\
+		_Static_assert((cond), msg);			\
+		int dummy;					\
 	}) * 0))
+
+
+#define sizeof_fits_ptrdiff(x)					\
+	static_assert_expr(sizeof(x) <= (size_t)PTRDIFF_MAX,	\
+			   "sizeof(" #x ") exceeds PTRDIFF_MAX")
+
+/*
+ * Signed variant of `sizeof`, expanding to a value of type `ptrdiff_t`.
+ *
+ * Useful for pointer arithmetic and comparisons where mixing `size_t` with
+ * signed types would trigger -Wconversion or -Wsign-compare.
+ *
+ * Asserts at compile time that `sizeof(x)` safely fits within a `ptrdiff_t`.
+ */
+#define ssizeof(x) \
+	((ptrdiff_t)sizeof(x) + sizeof_fits_ptrdiff(x))
 
 #endif /* CDEFS_H */
