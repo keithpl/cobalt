@@ -140,4 +140,12 @@
 #define is_aligned(x, align)	(!((uintptr_t)(x) & ((align) - 1)))
 #endif
 
+#if __has_builtin(__builtin_expect)
+#define likely(expr)		__builtin_expect((expr) != 0, 1)
+#define unlikely(expr)		__builtin_expect((expr) != 0, 0)
+#else
+#define likely(expr)		((expr) != 0)
+#define unlikely(expr)		((expr) != 0)
+#endif
+
 #endif /* CDEFS_H */
