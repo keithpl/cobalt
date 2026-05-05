@@ -62,3 +62,42 @@ DEPS		:= $(OBJECTS:.o=.d)
 
 TARGET_NAME	:= cobalt
 TARGET		:= $(BUILD_DIR)/$(TARGET_NAME)
+
+.PHONY: all
+all: release
+
+.PHONY: clean
+clean:
+	@rm -rf -- $(OBJ_DIR) $(BUILD_DIR)
+	@rm -f -- $(LSP_CFLAGS_FILE)
+
+.PHONY: lsp-cflags-file
+lsp-cflags-file: $(LSP_CFLAGS_FILE)
+
+.PHONY: debug
+debug: CFLAGS += $(DEBUG_CFLAGS)
+debug: WARNS += $(DEBUG_WARNS)
+debug: $(TARGET)
+
+.PHONY: asan
+asan: CFLAGS += $(DEBUG_CFLAGS) $(ASAN_CFLAGS)
+asan: WARNS += $(DEBUG_WARNS)
+asan: $(TARGET)
+
+.PHONY: release
+release: CFLAGS += $(RELEASE_CFLAGS)
+release: $(TARGET)
+
+$(TARGET): $(OBJECTS) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJECTS) -o $@ $(LDLIBS)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR) $(LSP_CFLAGS_FILE)
+	$(CC) $(CFLAGS) $(WARNS) $(DEPFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJ_DIR) $(BUILD_DIR):
+	@mkdir -p $@
+
+$(LSP_CFLAGS_FILE): Makefile
+	@printf "%s\n" $(LSP_CFLAGS) $(INCLUDES) > $@
+
+-include $(DEPS)
