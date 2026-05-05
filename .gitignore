@@ -1,3 +1,36 @@
+# Litter from operating systems
+.DS_Store
+
+# Editor backup files
+*~
+*.swp
+
+# Log files
+*.log
+
+# Clangd
+.cache/
+.clangd/
+compile_flags.txt
+compile_commands.json
+
+# Profiling outputs (gprof & perf)
+*.gprof
+*.prof
+gmon.out
+perf.data*
+
+# Valgrind output files
+vgcore.*
+valgrind.log*
+
+# Sanitizer output files
+*.asan
+
+# Project build output
+obj/
+build/
+
 # Prerequisites
 *.d
 
