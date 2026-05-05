@@ -61,4 +61,15 @@
  */
 #define DECONST(type, ptr)	((type)(uintptr_t)(const void *)(ptr))
 
+/*
+ * A variant of `static_assert()` which expands to a constant expression of
+ * value (int)0. Unlike `static_assert()`, which is a declaration, this macro
+ * may appear anywhere an expression is valid.
+ */
+#define static_assert_expr(cond, msg)		\
+	((int)(sizeof(struct {			\
+		_Static_assert((cond), msg);	\
+		int dummy;			\
+	}) * 0))
+
 #endif /* CDEFS_H */
