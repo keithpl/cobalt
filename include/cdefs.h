@@ -94,4 +94,22 @@
 #define ssizeof(x) \
 	((ptrdiff_t)sizeof(x) + sizeof_fits_ptrdiff(x))
 
+/*
+ * Test if `x` is an array.
+ *
+ * For a pointer `x` of type `T *`, `&x` is of type `T **`; for an array `x`
+ * of type `T[N]`, `&x` is of type `T (*)[N]`. The selection type
+ * `typeof(&(x)[0]) *` always evaluates to type `T **`, only pointers to
+ * complete types match the first case and arrays fall through to the default.
+ *
+ * typeof(x)    typeof(&x)      typeof(&(x)[0]) *       result
+ * ---------    ----------      -----------------       ------
+ * int *        int **          int **                  0
+ * int[N]       int (*)[N]      int **                  1
+ */
+#define is_array(x) _Generic((&(x)),				\
+	typeof(&(x)[0]) *:	0,				\
+	default:		1				\
+)
+
 #endif /* CDEFS_H */
