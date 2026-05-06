@@ -157,4 +157,91 @@
 #define unlikely(expr)		((expr) != 0)
 #endif
 
+#if __has_attribute(__used__)
+#define always_used		__attribute__((__used__))
+#else
+#define always_used
+#endif
+
+#if __has_attribute(__unused__)
+#define maybe_unused		__attribute__((__unused__))
+#define always_unused		__attribute__((__unused__))
+#else
+#define maybe_unused
+#define always_unused
+#endif
+
+#if __has_attribute(__nonnull__)
+#define nonnull_params(...)	__attribute__((__nonnull__(__VA_ARGS__)))
+#define nonnull_all_params	__attribute__((__nonnull__))
+#else
+#define nonnull_params(...)
+#define nonnull_all_params
+#endif
+
+#if __has_attribute(__fallthrough__)
+#define fallthrough		__attribute__((__fallthrough__))
+#else
+#define fallthrough
+#endif
+
+#if __has_attribute(__noinline__)
+#define never_inline		__attribute__((__noinline__))
+#else
+#define never_inline
+#endif
+
+#if __has_attribute(__always_inline__)
+#define always_inline		__attribute__((__always_inline__)) inline
+#else
+#define always_inline		inline
+#endif
+
+#if __has_attribute(__const__)
+#define constfn			__attribute__((__const__))
+#else
+#define constfn
+#endif
+
+#if __has_attribute(__pure__)
+#define purefn			__attribute__((__pure__))
+#else
+#define purefn
+#endif
+
+#if __has_attribute(__warn_unused_result__)
+#define nodiscard		__attribute__((__warn_unused_result__))
+#else
+#define nodiscard
+#endif
+
+#if __has_attribute(__malloc__)
+#define malloc_like		__attribute__((__malloc__))
+#else
+#define malloc_like
+#endif
+
+#if __has_attribute(__format__)
+
+#define printf_like(fmtarg, firstvararg) \
+	__attribute__((__format__(__printf__, (fmtarg), (firstvararg))))
+
+#define vprintf_like(fmtarg) \
+	__attribute__((__format__(__printf__, (fmtarg), 0)))
+
+#define scanf_like(fmtarg, firstvararg) \
+	__attribute__((__format__(__scanf__, (fmtarg), (firstvararg))))
+
+#define vscanf_like(fmtarg) \
+	__attribute__((__format__(__scanf__, (fmtarg), 0)))
+
+#else /* __has_attribute(__format__) */
+
+#define printf_like(fmtarg, firstvararg)
+#define vprintf_like(fmtarg)
+#define scanf_like(fmtarg, firstvararg)
+#define vscanf_like(fmtarg)
+
+#endif /* __has_attribute(__format__) */
+
 #endif /* CDEFS_H */
