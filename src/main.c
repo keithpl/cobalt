@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "cdefs.h"
+#include "strutil.h"
 
 int main(void)
 {
