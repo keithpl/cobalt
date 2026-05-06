@@ -1,7 +1,8 @@
+#include <limits.h>
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
-#include <limits.h>
+#include <string.h>
 
 #include "cdefs.h"
 #include "strutil.h"
@@ -36,4 +37,20 @@ int scnprintf(char *restrict buf, size_t size, const char *restrict fmt, ...)
 	va_end(args);
 
 	return ret;
+}
+
+size_t safe_strncpy(char *restrict dest, const char *restrict src, size_t n)
+{
+	size_t len;
+	size_t src_len;
+
+	if (unlikely(!n))
+		return 0;
+
+	src_len = strnlen(src, n);
+	len = (src_len < n) ? src_len : n - 1;
+
+	memcpy(dest, src, len);
+	dest[len] = 0;
+	return src_len;
 }
