@@ -112,4 +112,18 @@
 	default:		1				\
 )
 
+/* Compile-time assertion that `array` is an array. */
+#define assert_is_array(array)					\
+	static_assert_expr(is_array(array),			\
+			   "assert_is_array(): "		\
+			   "non-array object passed: " #array)
+
+/* Number of elements in `array` as a `size_t`. */
+#define countof(array) \
+	((sizeof(array) / sizeof((array)[0])) + assert_is_array(array))
+
+/* Signed variant of `countof()`, resulting in a value of type `ptrdiff_t`. */
+#define scountof(array) \
+	((ssizeof(array) / ssizeof((array)[0])) + assert_is_array(array))
+
 #endif /* CDEFS_H */
