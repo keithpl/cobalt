@@ -19,3 +19,8 @@ CFLAGS		:= -std=c17 -pipe -pthread
 RELEASE_CFLAGS	:= -march=native -O2 -flto=auto -DNDEBUG
 DEBUG_CFLAGS	:= -Og -g3 -fno-omit-frame-pointer -DDEBUG
 ASAN_CFLAGS	:= -fsanitize=address,leak,undefined -fno-sanitize-recover=all
+
+LDFLAGS		:= -Wl,--sort-common,--as-needed
+RELEASE_LDFLAGS	:= -Wl,-O1
+DEBUG_LDFLAGS	:= -Wl,--fatal-warnings
+LDLIBS		:=
