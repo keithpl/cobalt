@@ -24,3 +24,13 @@ LDFLAGS		:= -Wl,--sort-common,--as-needed
 RELEASE_LDFLAGS	:= -Wl,-O1
 DEBUG_LDFLAGS	:= -Wl,--fatal-warnings
 LDLIBS		:=
+
+WARNS		:= -Wall -Wextra -Wpedantic -pedantic-errors -Wformat=2	\
+		   -Wshadow -Wstrict-prototypes -Wstrict-overflow=2	\
+		   -Wredundant-decls -Wnested-externs -Wcast-qual	\
+		   -Wfloat-equal -Wdouble-promotion -Wpointer-arith	\
+		   -Wundef -Winit-self -Wwrite-strings -Wconversion	\
+		   -Wmissing-prototypes -Wmissing-declarations -Wvla	\
+		   -Walloca -Wnull-dereference -Wcast-align
+
+DEBUG_WARNS	:= -Werror
