@@ -101,4 +101,24 @@
  */
 #define DECONST(type, ptr)	((type)(uintptr_t)(const void *)(ptr))
 
+/*
+ * Check if `x` is an array.
+ *
+ * For an array `x` of type `T [N]`, `&x` is of type `T (*)[N]`; for a
+ * pointer `x` of type `T *`, `&x` is of type `T **`.
+ *
+ * The selection type `typeof((x)[0]) (*)[]` has type `T (*)[]`, a pointer to
+ * an incomplete array, which is compatible with `T (*)[N]` but not `T **`.
+ * Arrays match the first case; pointers fall through to the default.
+ *
+ * typeof(x)    typeof(&x)      typeof((x)[0]) (*)[]    result
+ * ---------    ----------      --------------------    ------
+ * int[N]       int (*)[N]      int (*)[]               1
+ * int *        int **          int (*)[]               0
+ */
+#define is_array(x) _Generic((&(x)),					\
+	typeof((x)[0]) (*)[]:	1,					\
+	default:		0					\
+)
+
 #endif /* CDEFS_H */
