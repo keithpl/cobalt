@@ -55,3 +55,16 @@ LSP_CFLAGS	:= $(CFLAGS) $(RELEASE_CFLAGS) $(WARNS)			\
 		   -Wno-empty-translation-unit
 
 LSP_CFLAGS_FILE	:= compile_flags.txt
+
+DEPFLAGS	:= -MMD -MP
+
+SRC_DIR		:= ./src
+OBJ_DIR		:= ./obj
+BUILD_DIR	:= ./build
+
+SOURCES		:= $(wildcard $(SRC_DIR)/*.c)
+OBJECTS		:= $(SOURCES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+DEPS		:= $(OBJECTS:.o=.d)
+
+TARGET_NAME	:= cobalt
+TARGET		:= $(BUILD_DIR)/$(TARGET_NAME)
