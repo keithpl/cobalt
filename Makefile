@@ -98,3 +98,17 @@ asan: $(TARGET)
 release: CFLAGS += $(RELEASE_CFLAGS)
 release: LDFLAGS += $(RELEASE_LDFLAGS)
 release: $(TARGET)
+
+$(TARGET): $(OBJECTS) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJECTS) -o $@ $(LDLIBS)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR) $(LSP_CFLAGS_FILE)
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(WARNS) $(DEPFLAGS) -c $< -o $@
+
+$(OBJ_DIR) $(BUILD_DIR):
+	@mkdir -p $@
+
+$(LSP_CFLAGS_FILE): Makefile
+	@printf "%s\n" $(LSP_CFLAGS) $(CPPFLAGS) > $@
+
+-include $(DEPS)
