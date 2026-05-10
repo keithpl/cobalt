@@ -1,6 +1,9 @@
 #ifndef CDEFS_H
 #define CDEFS_H
 
+#include <stddef.h>
+#include <stdint.h>
+
 #ifndef __has_attribute
 #define __has_attribute(x)	0
 #endif
@@ -53,5 +56,17 @@
 		_Static_assert((cond), msg);				\
 		int dummy;						\
 	}) * 0))
+
+/*
+ * Signed variant of `sizeof`, expanding to a value of `ptrdiff_t`. Asserts at
+ * compile-time that `sizeof(x)` does not exceed `PTRDIFF_MAX`.
+ *
+ * Useful for arithmetic and comparisons where mixing `size_t` with signed
+ * types would trigger -Wconversion or -Wsign-compare.
+ */
+#define ssizeof(x)							\
+	((ptrdiff_t)sizeof(x) +						\
+	 static_assert_expr(sizeof(x) <= (size_t)PTRDIFF_MAX,		\
+			    "sizeof(" #x ") exceeds PTRDIFF_MAX"))
 
 #endif /* CDEFS_H */
