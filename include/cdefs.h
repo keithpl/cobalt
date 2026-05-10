@@ -40,4 +40,18 @@
 #endif
 #endif
 
+/*
+ * Check a condition at compile time; the condition must be a compile-time
+ * constant expression.
+ *
+ * Unlike `static_assert()`, which is a declaration and restricted to
+ * declaration context, this macro expands to a constant expression of value
+ * `(int)0` and may appear anywhere an expression is valid.
+ */
+#define static_assert_expr(cond, msg)					\
+	((int)(sizeof(struct {						\
+		_Static_assert((cond), msg);				\
+		int dummy;						\
+	}) * 0))
+
 #endif /* CDEFS_H */
