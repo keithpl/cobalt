@@ -25,4 +25,19 @@
 #define __has_include(x)	0
 #endif
 
+/*
+ * Provide `typeof` using a compiler extension, `__typeof__`.
+ *
+ * While this is an extension in <= C17, `typeof` was standardized in C23, with
+ * the same behavior as the extension, relying on the extension is acceptable
+ * going forward.
+ *
+ * This definition can be dropped after the project switches to -std=c23.
+ */
+#if !defined(__STDC_VERSION__) || (__STDC_VERSION__ < 202311L)
+#ifndef typeof
+#define typeof			__typeof__
+#endif
+#endif
+
 #endif /* CDEFS_H */
