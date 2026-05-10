@@ -121,4 +121,9 @@
 	default:		0					\
 )
 
+#define assert_is_array(array)						\
+	static_assert_expr(is_array(array),				\
+			   "assert_is_array(): "			\
+			   "non-array object passed: " #array)
+
 #endif /* CDEFS_H */
