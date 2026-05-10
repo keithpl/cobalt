@@ -91,4 +91,14 @@
 /* First expand all variadic tokens, then stringify the results. */
 #define STRING(...)		STRING_(__VA_ARGS__)
 
+/*
+ * Remove the `const` qualifier from `ptr` by casting it through `uintptr_t`.
+ * Casting directly from `const T *` to `T *`, even through `const void *` or
+ * `void *`, triggers -Wcast-qual.
+ *
+ * Do NOT use this macro on any object that was originally declared `const` as
+ * this is undefined behavior.
+ */
+#define DECONST(type, ptr)	((type)(uintptr_t)(const void *)(ptr))
+
 #endif /* CDEFS_H */
