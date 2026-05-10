@@ -126,4 +126,15 @@
 			   "assert_is_array(): "			\
 			   "non-array object passed: " #array)
 
+/*
+ * Calculate the number of elements in `array` as a `size_t`, asserted at
+ * compile-time to be an array.
+ */
+#define countof(array) \
+	((sizeof(array) / sizeof((array)[0])) + assert_is_array(array))
+
+/* Signed variant of `countof()`, expanding to a value of `ptrdiff_t`. */
+#define scountof(array) \
+	((ssizeof(array) / ssizeof((array)[0])) + assert_is_array(array))
+
 #endif /* CDEFS_H */
