@@ -1,3 +1,28 @@
+# Project build output
+obj/
+build/
+
+# Editor backup files
+*~
+*.swp
+
+# Log files
+*.log
+
+# Clangd
+compile_flags.txt
+compile_commands.json
+
+# Profiling outputs (gprof & perf)
+*.gprof
+*.prof
+gmon.out
+perf.data*
+
+# Valgrind output files
+vgcore.*
+valgrind.log*
+
 # Prerequisites
 *.d
 
