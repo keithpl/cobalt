@@ -69,4 +69,26 @@
 	 static_assert_expr(sizeof(x) <= (size_t)PTRDIFF_MAX,		\
 			    "sizeof(" #x ") exceeds PTRDIFF_MAX"))
 
+/*
+ * Concatenate tokens `x` and `y` without macro expansion.
+ *
+ * This is primarily a helper for `CONCAT()`; use `CONCAT()` instead unless
+ * macro expansion is not desired.
+ */
+#define CONCAT_(x, y)		x ## y
+
+/* First expand tokens `x` and `y`, then concatenate the results. */
+#define CONCAT(x, y)		CONCAT_(x, y)
+
+/*
+ * Stringify all variadic tokens without macro expansion.
+ *
+ * This is primarily a helper for `STRING()`; use `STRING()` instead unless
+ * macro expansion is not desired.
+ */
+#define STRING_(...)		#__VA_ARGS__
+
+/* First expand all variadic tokens, then stringify the results. */
+#define STRING(...)		STRING_(__VA_ARGS__)
+
 #endif /* CDEFS_H */
