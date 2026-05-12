@@ -51,4 +51,71 @@ static inline bool list_is_head(const struct list_node *head,
 #define list_entry_is_head(head, entry, member) \
 	list_is_head((head), &(entry)->member)
 
+static inline void list_link(struct list_node *prev, struct list_node *next)
+{
+	prev->next = next;
+	next->prev = prev;
+}
+
+static inline void list_init(struct list_node *node)
+{
+	list_link(node, node);
+}
+
+static inline void list_insert(struct list_node *node,
+			       struct list_node *prev,
+			       struct list_node *next)
+{
+	list_link(prev, node);
+	list_link(node, next);
+}
+
+static inline void list_add(struct list_node *head, struct list_node *node)
+{
+	list_insert(node, head, head->next);
+}
+
+static inline void list_add_tail(struct list_node *head, struct list_node *node)
+{
+	list_insert(node, head->prev, head);
+}
+
+static inline void list_del(struct list_node *node)
+{
+	list_link(node->prev, node->next);
+}
+
+static inline void list_del_init(struct list_node *node)
+{
+	list_del(node);
+	list_init(node);
+}
+
+static inline void list_move(struct list_node *dst_head,
+			     struct list_node *node)
+{
+	list_del(node);
+	list_add(dst_head, node);
+}
+
+static inline void list_move_tail(struct list_node *dst_head,
+				  struct list_node *node)
+{
+	list_del(node);
+	list_add_tail(dst_head, node);
+}
+
+static inline void list_replace(struct list_node *old_node,
+				struct list_node *new_node)
+{
+	list_insert(new_node, old_node->prev, old_node->next);
+}
+
+static inline void list_replace_init(struct list_node *old_node,
+				     struct list_node *new_node)
+{
+	list_replace(old_node, new_node);
+	list_init(old_node);
+}
+
 #endif /* LIST_H */
