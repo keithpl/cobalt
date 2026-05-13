@@ -118,4 +118,42 @@ static inline void list_replace_init(struct list_node *old_node,
 	list_init(old_node);
 }
 
+#define list_for_each(head, pos)					\
+	for ((pos) = (head)->next;					\
+	     !list_is_head((head), (pos));				\
+	     (pos) = (pos)->next)
+
+#define list_for_each_reverse(head, pos)				\
+	for ((pos) = (head)->prev;					\
+	     !list_is_head((head), (pos));				\
+	     (pos) = (pos)->prev)
+
+#define list_for_each_from(head, pos)					\
+	for (; !list_is_head((head), (pos));				\
+	     (pos) = (pos)->next)
+
+#define list_for_each_from_reverse(head, pos)				\
+	for (; !list_is_head((head), (pos));				\
+	     (pos) = (pos)->prev)
+
+#define list_for_each_safe(head, pos, tmp)				\
+	for ((pos) = (head)->next, (tmp) = (pos)->next;			\
+	     !list_is_head((head), (pos));				\
+	     (pos) = (tmp), (tmp) = (tmp)->next)
+
+#define list_for_each_reverse_safe(head, pos, tmp)			\
+	for ((pos) = (head)->prev, (tmp) = (pos)->prev;			\
+	     !list_is_head((head), (pos));				\
+	     (pos) = (tmp), (tmp) = (tmp)->prev)
+
+#define list_for_each_from_safe(head, pos, tmp)				\
+	for ((tmp) = (pos)->next;					\
+	     !list_is_head((head), (pos));				\
+	     (pos) = (tmp), (tmp) = (tmp)->next)
+
+#define list_for_each_from_reverse_safe(head, pos, tmp)			\
+	for ((tmp) = (pos)->prev;					\
+	     !list_is_head((head), (pos));				\
+	     (pos) = (tmp), (tmp) = (tmp)->prev)
+
 #endif /* LIST_H */
