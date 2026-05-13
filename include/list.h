@@ -139,21 +139,21 @@ static inline void list_replace_init(struct list_node *old_node,
 #define list_for_each_safe(head, pos, tmp)				\
 	for ((pos) = (head)->next, (tmp) = (pos)->next;			\
 	     !list_is_head((head), (pos));				\
-	     (pos) = (tmp), (tmp) = (tmp)->next)
+	     (pos) = (tmp), (tmp) = (pos)->next)
 
 #define list_for_each_reverse_safe(head, pos, tmp)			\
 	for ((pos) = (head)->prev, (tmp) = (pos)->prev;			\
 	     !list_is_head((head), (pos));				\
-	     (pos) = (tmp), (tmp) = (tmp)->prev)
+	     (pos) = (tmp), (tmp) = (pos)->prev)
 
 #define list_for_each_from_safe(head, pos, tmp)				\
 	for ((tmp) = (pos)->next;					\
 	     !list_is_head((head), (pos));				\
-	     (pos) = (tmp), (tmp) = (tmp)->next)
+	     (pos) = (tmp), (tmp) = (pos)->next)
 
 #define list_for_each_from_reverse_safe(head, pos, tmp)			\
 	for ((tmp) = (pos)->prev;					\
 	     !list_is_head((head), (pos));				\
-	     (pos) = (tmp), (tmp) = (tmp)->prev)
+	     (pos) = (tmp), (tmp) = (pos)->prev)
 
 #endif /* LIST_H */
