@@ -156,4 +156,44 @@ static inline void list_replace_init(struct list_node *old_node,
 	     !list_is_head((head), (pos));				\
 	     (pos) = (tmp), (tmp) = (pos)->prev)
 
+#define list_for_each_entry(head, pos, member)				\
+	for ((pos) = list_first_entry((head), typeof(*(pos)), member);	\
+	     !list_entry_is_head((head), (pos), member);		\
+	     (pos) = list_next_entry((pos), member))
+
+#define list_for_each_entry_reverse(head, pos, member)			\
+	for ((pos) = list_last_entry((head), typeof(*(pos)), member);	\
+	     !list_entry_is_head((head), (pos), member);		\
+	     (pos) = list_prev_entry((pos), member))
+
+#define list_for_each_entry_from(head, pos, member)			\
+	for (; !list_entry_is_head((head), (pos), member);		\
+	     (pos) = list_next_entry((pos), member))
+
+#define list_for_each_entry_from_reverse(head, pos, member)		\
+	for (; !list_entry_is_head((head), (pos), member);		\
+	     (pos) = list_prev_entry((pos), member))
+
+#define list_for_each_entry_safe(head, pos, tmp, member)		\
+	for ((pos) = list_first_entry((head), typeof(*(pos)), member),	\
+	     (tmp) = list_next_entry((pos), member);			\
+	     !list_entry_is_head((head), (pos), member);		\
+	     (pos) = (tmp), (tmp) = list_next_entry((pos), member))
+
+#define list_for_each_entry_reverse_safe(head, pos, tmp, member)	\
+	for ((pos) = list_last_entry((head), typeof(*(pos)), member),	\
+	     (tmp) = list_prev_entry((pos), member);			\
+	     !list_entry_is_head((head), (pos), member);		\
+	     (pos) = (tmp), (tmp) = list_prev_entry((pos), member))
+
+#define list_for_each_entry_from_safe(head, pos, tmp, member)		\
+	for ((tmp) = list_next_entry((pos), member);			\
+	     !list_entry_is_head((head), (pos), member);		\
+	     (pos) = (tmp), (tmp) = list_next_entry((pos), member))
+
+#define list_for_each_entry_from_reverse_safe(head, pos, tmp, member)	\
+	for ((tmp) = list_prev_entry((pos), member);			\
+	     !list_entry_is_head((head), (pos), member);		\
+	     (pos) = (tmp), (tmp) = list_prev_entry((pos), member))
+
 #endif /* LIST_H */
