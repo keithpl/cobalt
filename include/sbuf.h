@@ -17,4 +17,15 @@ struct sbuf {
 	unsigned int flags;
 };
 
+static inline void sbuf_reset(struct sbuf *sb)
+{
+	sb->buf[0] = 0;
+	sb->len = 0;
+}
+
+int sbuf_init(struct sbuf *sb, char *buf, size_t size, unsigned int user_flags);
+struct sbuf *sbuf_create(char *buf, size_t size, unsigned int user_flags);
+
+void sbuf_destroy(struct sbuf *sb);
+
 #endif /* SBUF_H */
