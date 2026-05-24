@@ -24,7 +24,30 @@ static inline void sbuf_reset(struct sbuf *sb)
 }
 
 int sbuf_init(struct sbuf *sb, char *buf, size_t size, unsigned int user_flags);
+
+static inline int sbuf_init_fixed(struct sbuf *sb, size_t size)
+{
+	return sbuf_init(sb, NULL, size, SBUF_FIXED);
+}
+
+static inline int sbuf_init_auto(struct sbuf *sb, size_t size)
+{
+	return sbuf_init(sb, NULL, size, SBUF_AUTOGROW);
+}
+
+
 struct sbuf *sbuf_create(char *buf, size_t size, unsigned int user_flags);
+
+static inline struct sbuf *sbuf_create_fixed(size_t size)
+{
+	return sbuf_create(NULL, size, SBUF_FIXED);
+}
+
+static inline struct sbuf *sbuf_create_auto(size_t size)
+{
+	return sbuf_create(NULL, size, SBUF_AUTOGROW);
+}
+
 
 void sbuf_destroy(struct sbuf *sb);
 
