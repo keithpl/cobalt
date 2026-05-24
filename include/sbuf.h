@@ -17,11 +17,17 @@ struct sbuf {
 	unsigned int flags;
 };
 
+static inline size_t sbuf_avail(const struct sbuf *sb)
+{
+	return sb->size - sb->len - 1;
+}
+
 static inline void sbuf_reset(struct sbuf *sb)
 {
 	sb->buf[0] = 0;
 	sb->len = 0;
 }
+
 
 int sbuf_init(struct sbuf *sb, char *buf, size_t size, unsigned int user_flags);
 

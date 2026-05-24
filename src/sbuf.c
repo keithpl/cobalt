@@ -16,6 +16,11 @@ static inline bool sbuf_is_dynstruct(const struct sbuf *sb)
 	return sb->flags & SBUF_DYNSTRUCT;
 }
 
+static inline bool sbuf_can_fit(const struct sbuf *sb, size_t len)
+{
+	return sbuf_avail(sb) >= len;
+}
+
 static inline void sbuf_attach(struct sbuf *sb, char *buf, size_t size,
 			       unsigned int flags)
 {
